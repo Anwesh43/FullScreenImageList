@@ -44,11 +44,11 @@ public class FullScreenImageList {
     public void show() {
         if(relativeLayout == null) {
             relativeLayout = new RelativeLayout(activity);
-            float x = 0,y = 0,viewH = h/6;
+            float x = 0,y = 0;
             for(FullScreenImageView fullScreenImageView:fullScreenImageViews) {
                 fullScreenImageView.setInitXY(x,y);
-                relativeLayout.addView(fullScreenImageView,new WindowManager.LayoutParams(w,(int)viewH));
-                y+=viewH;
+                relativeLayout.addView(fullScreenImageView,new ViewGroup.LayoutParams(w,h/3));
+                y+=h/3;
             }
             activity.setContentView(relativeLayout);
         }

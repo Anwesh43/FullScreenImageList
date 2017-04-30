@@ -13,7 +13,7 @@ import android.view.View;
 public class FullScreenImageView extends View {
     private int render = 0;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private float finalW,finalH,currX,currY,initW,initH,deg = 0;
+    private float finalW,finalH,currX,currY,initW,initH,deg = 0,pivotX,pivotY;
     private FullScreenButton fullScreenButton = new FullScreenButton();
     private Bitmap bitmap;
     private AnimationHandler animationHandler;
@@ -34,7 +34,6 @@ public class FullScreenImageView extends View {
         currY = y;
     }
     public void update(float factor) {
-        setXY(currX-currX*factor,currY-currY*factor);
         setScaleX((initW+(finalW-initW)*factor)/initW);
         setScaleY((initH+(finalH-initH)*factor)/initH);
         int bitmapW = (int)(initW+(finalH-initW)*factor);
@@ -42,6 +41,9 @@ public class FullScreenImageView extends View {
         bitmap = Bitmap.createScaledBitmap(bitmap,bitmapW,bitmapH,true);
         deg = 90*factor;
         fullScreenButton.move(factor,finalW,finalH);
+        pivotX = (initW)/2 + (finalW/2-initW/2)*factor;
+        pivotY = (initH)/2 + (finalH/2-initH/2)*factor;
+        setXY(pivotX-initW/2,pivotY-initH/2);
         postInvalidate();
     }
 
@@ -49,11 +51,14 @@ public class FullScreenImageView extends View {
         if(render == 0) {
             initW = canvas.getWidth();
             initH = canvas.getHeight();
+            pivotX = initW/2;
+            pivotY = initH/2;
             fullScreenButton.setDimension(initW/2,initH/2,initW/8);
             bitmap = Bitmap.createScaledBitmap(bitmap,canvas.getWidth(),canvas.getHeight(),true);
             fullScreenButton.setOnTapListener(new FullScreenButton.OnTapListener() {
                 @Override
                 public void onTapToExpand() {
+                    bringToFront();
                     animationHandler.start();
                 }
 
@@ -63,9 +68,8 @@ public class FullScreenImageView extends View {
                 }
             });
         }
-        float x = 0,y = 0,w = canvas.getWidth(),h = canvas.getHeight();
         canvas.save();
-        canvas.translate(x+w/2,y+h/2);
+        canvas.translate(pivotX,pivotY);
         canvas.rotate(deg);
         canvas.drawBitmap(bitmap,-bitmap.getWidth()/2,-bitmap.getHeight()/2,paint);
         canvas.restore();
