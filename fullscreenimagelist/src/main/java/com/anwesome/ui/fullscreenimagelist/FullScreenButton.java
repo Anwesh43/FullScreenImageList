@@ -55,11 +55,17 @@ public class FullScreenButton {
     public boolean handleTap(float x,float y) {
         boolean condition = x>=this.x -size/2 && x<=this.x+size/2 && y>=this.y - size/2 && y<=this.y +size/2;
         if(condition && onTapListener != null) {
-            onTapListener.onTap();
+           if(deg <= 0) {
+               onTapListener.onTapToExpand();
+           }
+            else {
+               onTapListener.onTapToShrink();
+           }
         }
         return condition;
     }
     public interface OnTapListener {
-        void onTap();
+        void onTapToExpand();
+        void onTapToShrink();
     }
 }
