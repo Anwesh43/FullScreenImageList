@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -57,5 +58,11 @@ public class FullScreenImageView extends View {
         fullScreenButton.draw(canvas,paint);
         canvas.restore();
         render++;
+    }
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            fullScreenButton.handleTap(event.getX(),event.getY());
+        }
+        return true;
     }
 }
