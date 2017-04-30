@@ -9,6 +9,7 @@ import android.graphics.PointF;
  * Created by anweshmishra on 30/04/17.
  */
 public class FullScreenButton {
+    private OnTapListener onTapListener;
     private float x,y,size,deg = 0,initX,initY;
     public void setDimension(float x,float y,float size) {
         this.x = x;
@@ -40,6 +41,9 @@ public class FullScreenButton {
         }
         canvas.restore();
     }
+    public void setOnTapListener(OnTapListener onTapListener) {
+        this.onTapListener = onTapListener;
+    }
     public void move(float factor,float w,float h) {
         deg = 90*factor;
         x = initX+(w/2-initX)*factor;
@@ -47,5 +51,15 @@ public class FullScreenButton {
     }
     public int hashCode() {
         return (int)(x+y);
+    }
+    public boolean handleTap(float x,float y) {
+        boolean condition = x>=this.x -size/2 && x<=this.x+size/2 && y>=this.y - size/2 && y<=this.y +size/2;
+        if(condition && onTapListener != null) {
+            onTapListener.onTap();
+        }
+        return condition;
+    }
+    public interface OnTapListener {
+        void onTap();
     }
 }
