@@ -16,11 +16,13 @@ public class FullScreenImageView extends View {
     private float finalW,finalH,currX,currY,initW,initH,deg = 0;
     private FullScreenButton fullScreenButton = new FullScreenButton();
     private Bitmap bitmap;
+    private AnimationHandler animationHandler;
     public FullScreenImageView(Context context, Bitmap bitmap,float finalH, float finalW) {
         super(context);
         this.finalH = finalH;
         this.finalW = finalW;
         this.bitmap = bitmap;
+        animationHandler = new AnimationHandler(this);
     }
     private void setXY(float x,float y) {
         super.setX(x);
@@ -49,6 +51,17 @@ public class FullScreenImageView extends View {
             initH = canvas.getHeight();
             fullScreenButton.setDimension(initW/2,initH/2,initW/8);
             bitmap = Bitmap.createScaledBitmap(bitmap,canvas.getWidth(),canvas.getHeight(),true);
+            fullScreenButton.setOnTapListener(new FullScreenButton.OnTapListener() {
+                @Override
+                public void onTapToExpand() {
+                    animationHandler.start();
+                }
+
+                @Override
+                public void onTapToShrink() {
+                    animationHandler.end();
+                }
+            });
         }
         float x = getX(),y = getY(),w = canvas.getWidth(),h = canvas.getHeight();
         canvas.save();
