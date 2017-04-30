@@ -28,7 +28,9 @@ public class FullScreenButton {
             canvas.translate(-size/3,-size/3);
             canvas.rotate(deg);
             paint.setColor(Color.WHITE);
-            paint.setStrokeWidth(size/30);
+            paint.setStrokeWidth(size/15);
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            paint.setStrokeJoin(Paint.Join.ROUND);
             for(int j=0;j<2;j++) {
                 canvas.save();
                 canvas.translate(-size / 6, -size / 6);
@@ -45,7 +47,7 @@ public class FullScreenButton {
         this.onTapListener = onTapListener;
     }
     public void move(float factor,float w,float h) {
-        deg = 90*factor;
+        deg = 180*factor;
         x = initX+(w/2-initX)*factor;
         y = initY+(h/2-initY)*factor;
     }

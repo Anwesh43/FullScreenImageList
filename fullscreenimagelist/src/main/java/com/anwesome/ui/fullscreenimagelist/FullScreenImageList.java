@@ -25,10 +25,10 @@ public class FullScreenImageList {
         this.activity = activity;
         initDimension();
     }
-    public void initDimension() {
+    private void initDimension() {
         DisplayManager displayManager = (DisplayManager)activity.getSystemService(Context.DISPLAY_SERVICE);
         Display display = displayManager.getDisplay(0);
-        if(display == null) {
+        if(display != null) {
             Point size = new Point();
             display.getRealSize(size);
             w = size.x;
@@ -44,7 +44,7 @@ public class FullScreenImageList {
     public void show() {
         if(relativeLayout == null) {
             relativeLayout = new RelativeLayout(activity);
-            float x = 0,y = 0,viewH = w*((w*1.0f)/h);
+            float x = 0,y = 0,viewH = h/6;
             for(FullScreenImageView fullScreenImageView:fullScreenImageViews) {
                 fullScreenImageView.setInitXY(x,y);
                 relativeLayout.addView(fullScreenImageView,new WindowManager.LayoutParams(w,(int)viewH));

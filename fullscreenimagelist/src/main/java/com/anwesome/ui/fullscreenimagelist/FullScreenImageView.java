@@ -35,8 +35,8 @@ public class FullScreenImageView extends View {
     }
     public void update(float factor) {
         setXY(currX-currX*factor,currY-currY*factor);
-        setScaleX((initW+(finalW-initH)*factor)/initW);
-        setScaleY((initH+(finalH-initW)*factor)/initH);
+        setScaleX((initW+(finalW-initW)*factor)/initW);
+        setScaleY((initH+(finalH-initH)*factor)/initH);
         int bitmapW = (int)(initW+(finalH-initW)*factor);
         int bitmapH = (int)(initH+(finalW-initH)*factor);
         bitmap = Bitmap.createScaledBitmap(bitmap,bitmapW,bitmapH,true);
@@ -63,13 +63,13 @@ public class FullScreenImageView extends View {
                 }
             });
         }
-        float x = getX(),y = getY(),w = canvas.getWidth(),h = canvas.getHeight();
+        float x = 0,y = 0,w = canvas.getWidth(),h = canvas.getHeight();
         canvas.save();
         canvas.translate(x+w/2,y+h/2);
         canvas.rotate(deg);
         canvas.drawBitmap(bitmap,-bitmap.getWidth()/2,-bitmap.getHeight()/2,paint);
-        fullScreenButton.draw(canvas,paint);
         canvas.restore();
+        fullScreenButton.draw(canvas,paint);
         render++;
     }
     public boolean onTouchEvent(MotionEvent event) {
