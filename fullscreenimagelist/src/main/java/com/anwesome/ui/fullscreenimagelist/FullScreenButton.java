@@ -46,10 +46,9 @@ public class FullScreenButton {
     public void setOnTapListener(OnTapListener onTapListener) {
         this.onTapListener = onTapListener;
     }
-    public void move(float factor,float w,float h) {
+    public void move(float factor,float w) {
         deg = 180*factor;
-        x = initX+(w/2-initX)*factor;
-        y = initY+(h/2-initY)*factor;
+        size = w/8;
     }
     public int hashCode() {
         return (int)(x+y);

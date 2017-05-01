@@ -13,7 +13,7 @@ import android.view.View;
 public class FullScreenImageView extends View {
     private int render = 0;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private float finalW,finalH,currX,currY,initW,initH,deg = 0,pivotX,pivotY;
+    private float finalW,finalH,currX,currY,initW,initH,deg = 0;
     private FullScreenButton fullScreenButton = new FullScreenButton();
     private Bitmap bitmap;
     private AnimationHandler animationHandler;
@@ -34,16 +34,14 @@ public class FullScreenImageView extends View {
         currY = y;
     }
     public void update(float factor) {
-        setScaleX((initW+(finalW-initW)*factor)/initW);
-        setScaleY((initH+(finalH-initH)*factor)/initH);
-        int bitmapW = (int)(initW+(finalH-initW)*factor);
-        int bitmapH = (int)(initH+(finalW-initH)*factor);
+        int bitmapW = (int)(initW+(initH-initW)*factor);
+        int bitmapH = (int)(initH+(initW-initH)*factor);
         bitmap = Bitmap.createScaledBitmap(bitmap,bitmapW,bitmapH,true);
         deg = 90*factor;
-        fullScreenButton.move(factor,finalW,finalH);
-        pivotX = (initW)/2 + (finalW/2-initW/2)*factor;
-        pivotY = (initH)/2 + (finalH/2-initH/2)*factor;
-        setXY(pivotX-initW/2,pivotY-initH/2);
+        fullScreenButton.move(factor,bitmapW);
+        setXY(currX*(1-factor)+(finalW/2-initW/2)*factor,currY*(1-factor)+(finalH/2-initH/2)*factor);
+        setScaleX((initW+(finalW-initW)*factor)/(initW));
+        setScaleY((initH+(finalH-initH)*factor)/(initH));
         postInvalidate();
     }
 
@@ -51,8 +49,6 @@ public class FullScreenImageView extends View {
         if(render == 0) {
             initW = canvas.getWidth();
             initH = canvas.getHeight();
-            pivotX = initW/2;
-            pivotY = initH/2;
             fullScreenButton.setDimension(initW/2,initH/2,initW/8);
             bitmap = Bitmap.createScaledBitmap(bitmap,canvas.getWidth(),canvas.getHeight(),true);
             fullScreenButton.setOnTapListener(new FullScreenButton.OnTapListener() {
@@ -69,7 +65,7 @@ public class FullScreenImageView extends View {
             });
         }
         canvas.save();
-        canvas.translate(pivotX,pivotY);
+        canvas.translate(canvas.getWidth()/2,canvas.getHeight()/2);
         canvas.rotate(deg);
         canvas.drawBitmap(bitmap,-bitmap.getWidth()/2,-bitmap.getHeight()/2,paint);
         canvas.restore();
