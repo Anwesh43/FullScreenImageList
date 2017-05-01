@@ -15,13 +15,14 @@ public class FullScreenImageView extends View {
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private float finalW,finalH,currX,currY,initW,initH,deg = 0;
     private FullScreenButton fullScreenButton = new FullScreenButton();
-    private Bitmap bitmap;
+    private Bitmap bitmap,origBitmap;
     private AnimationHandler animationHandler;
     public FullScreenImageView(Context context, Bitmap bitmap,float finalH, float finalW) {
         super(context);
         this.finalH = finalH;
         this.finalW = finalW;
         this.bitmap = bitmap;
+        this.origBitmap = bitmap;
         animationHandler = new AnimationHandler(this);
     }
     private void setXY(float x,float y) {
@@ -36,7 +37,7 @@ public class FullScreenImageView extends View {
     public void update(float factor) {
         int bitmapW = (int)(initW+(initH-initW)*factor);
         int bitmapH = (int)(initH+(initW-initH)*factor);
-        bitmap = Bitmap.createScaledBitmap(bitmap,bitmapW,bitmapH,true);
+        bitmap = Bitmap.createScaledBitmap(origBitmap,bitmapW,bitmapH,true);
         deg = 90*factor;
         fullScreenButton.move(factor,bitmapW);
         setXY(currX*(1-factor)+(finalW/2-initW/2)*factor,currY*(1-factor)+(finalH/2-initH/2)*factor);
